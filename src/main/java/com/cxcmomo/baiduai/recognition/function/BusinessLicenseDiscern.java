@@ -52,7 +52,6 @@ public class BusinessLicenseDiscern extends BaiDuAIDiscern {
             if("0".equals(response.get("code"))){
                 orgParam(response, jsonObject, fieldStr);
             }
-
             //处理返回参数中文"无"
             Map<String,String> param = (Map<String, String>) response.get(OBJ);
             if(param !=null){
