@@ -65,6 +65,7 @@ public class CustomOrganizationCodeDiscern  extends BaiDuAIDiscern {
         Map<String, Object> response = new HashMap<String, Object>();
         try{
             response = checkEnable(jsonObject);
+
             if(!"0".equals(response.get("code"))){
                 return JSONUtils.convertToJSON(response);
             }
