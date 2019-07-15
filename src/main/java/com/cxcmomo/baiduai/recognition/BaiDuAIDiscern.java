@@ -114,6 +114,9 @@ public abstract class BaiDuAIDiscern {
         List<Map> list;
         try {
             reStatusStr = jsonObject.get(status).toString();
+            if(reStatusStr == null || reStatusStr.length()==0){
+                return new ResponseCode(code,message);
+            }
             list = JSONUtils.convertToList(messages, Map.class);
         }catch(Exception e){
             return new ResponseCode(code,message);
