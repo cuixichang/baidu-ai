@@ -2,6 +2,7 @@ package com.cxcmomo.baiduai.recognition.function;
 
 import com.baidu.aip.ocr.AipOcr;
 import com.cxcmomo.baiduai.recognition.BaiDuAIDiscern;
+import com.cxcmomo.baiduai.recognition.util.ResponseCode;
 import com.cxcmomo.baiduai.util.JSONUtils;
 import org.json.JSONObject;
 
@@ -68,7 +69,7 @@ public class BusinessLicenseDiscern extends BaiDuAIDiscern {
             response.put(OBJ,param);
         }catch(Exception e){
             logger.error(e.getMessage());
-            response = errorResponseCode("file parsing error");
+            response = ResponseCode.error("file parsing error");
         }
         return JSONUtils.convertToJSON(response);
     };

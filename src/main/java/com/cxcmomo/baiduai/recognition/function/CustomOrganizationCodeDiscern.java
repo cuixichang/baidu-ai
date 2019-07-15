@@ -2,6 +2,7 @@ package com.cxcmomo.baiduai.recognition.function;
 
 import com.baidu.aip.ocr.AipOcr;
 import com.cxcmomo.baiduai.recognition.BaiDuAIDiscern;
+import com.cxcmomo.baiduai.recognition.util.ResponseCode;
 import com.cxcmomo.baiduai.util.JSONUtils;
 import com.cxcmomo.baiduai.util.PropertiesUtil;
 import org.json.JSONObject;
@@ -32,11 +33,11 @@ public class CustomOrganizationCodeDiscern  extends BaiDuAIDiscern {
     @Override
     public String discernByIO(byte[] buffer, Map<String, String> expand) throws Exception {
         if(expand == null){
-            return JSONUtils.convertToJSON(errorResponseCode("请求传入参数异常，请检查"));
+            return JSONUtils.convertToJSON(ResponseCode.error("请求传入参数异常，请检查"));
         }
         String templateSign = expand.get("templateSign");
         if(templateSign == null || templateSign.length()==0){
-            return JSONUtils.convertToJSON(errorResponseCode("请求传入参数异常，请检查"));
+            return JSONUtils.convertToJSON(ResponseCode.error("请求传入参数异常，请检查"));
         }
         HashMap<String, String> options = new HashMap<String, String>();
         JSONObject jsonObject = aipOcr.custom(buffer,templateSign, options);
@@ -47,11 +48,11 @@ public class CustomOrganizationCodeDiscern  extends BaiDuAIDiscern {
     @Override
     public String discernByURL(String localUrl, Map<String, String> expand) throws Exception {
         if(expand == null){
-            return JSONUtils.convertToJSON(errorResponseCode("请求传入参数异常，请检查"));
+            return JSONUtils.convertToJSON(ResponseCode.error("请求传入参数异常，请检查"));
         }
         String templateSign = expand.get("templateSign");
         if(templateSign == null || templateSign.length()==0){
-            return JSONUtils.convertToJSON(errorResponseCode("请求传入参数异常，请检查"));
+            return JSONUtils.convertToJSON(ResponseCode.error("请求传入参数异常，请检查"));
         }
         HashMap<String, String> options = new HashMap<String, String>();
         JSONObject jsonObject = aipOcr.custom(localUrl,templateSign, options);
@@ -95,7 +96,7 @@ public class CustomOrganizationCodeDiscern  extends BaiDuAIDiscern {
                         }
                         response.put(OBJ,map);
                     }else {
-                        response = responseCode((String) m.get("code"), (String) m.get("message"));
+                        response = new ResponseCode((String) m.get("code"), (String) m.get("message"));
                     }
                     break;
                 }
@@ -103,11 +104,11 @@ public class CustomOrganizationCodeDiscern  extends BaiDuAIDiscern {
 
             if(index){
                 logger.error("图片识别异常:{}" ,jsonObject.toString());
-                response =  errorResponseCode("图片识别异常:" + jsonObject.toString());
+                response =  ResponseCode.error("图片识别异常:" + jsonObject.toString());
             }
         }catch(Exception e){
             logger.error("图片识别异常:{}" ,e.getMessage());
-            response =  errorResponseCode(e.getMessage());
+            response =  ResponseCode.error(e.getMessage());
         }
         return JSONUtils.convertToJSON(response);
     };

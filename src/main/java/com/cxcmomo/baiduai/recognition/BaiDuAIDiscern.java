@@ -2,6 +2,7 @@ package com.cxcmomo.baiduai.recognition;
 
 import com.baidu.aip.ocr.AipOcr;
 import com.cxcmomo.baiduai.recognition.util.BCConvert;
+import com.cxcmomo.baiduai.recognition.util.ResponseCode;
 import com.cxcmomo.baiduai.util.JSONUtils;
 import com.cxcmomo.baiduai.util.PropertiesUtil;
 import org.json.JSONObject;
@@ -68,17 +69,6 @@ public abstract class BaiDuAIDiscern {
 
     public abstract String discernByURL(String localUrl, Map<String ,String> expand) throws Exception;
 
-    public Map<String, Object> errorResponseCode(String message){
-        return responseCode("-1",message);
-    }
-
-    public Map<String, Object> responseCode(String code, String message){
-        Map<String, Object> response = new HashMap<String, Object>();
-        response.put("code",code);
-        response.put("message",message);
-        return response;
-    }
-
     protected String orgStructure(JSONObject jsonObject, String fieldStr, String... params)throws Exception {
         Map<String, Object> response = new HashMap<String, Object>();
         try{
@@ -89,7 +79,7 @@ public abstract class BaiDuAIDiscern {
             }
         }catch(Exception e){
             logger.error(e.getMessage());
-            response = errorResponseCode("file parsing error");
+            response = ResponseCode.error("file parsing error");
         }
         return JSONUtils.convertToJSON(response);
     };
@@ -109,7 +99,7 @@ public abstract class BaiDuAIDiscern {
             status = PropertiesUtil.getMessageByPropertiesFromRoot( "public.field.status",fileName);
         }catch(Exception e){
             logger.error(e.getMessage());
-            return errorResponseCode(e.getMessage());
+            return ResponseCode.error(e.getMessage());
         }
 
         String messages;
@@ -117,7 +107,7 @@ public abstract class BaiDuAIDiscern {
             messages = PropertiesUtil.getMessageByPropertiesFromRoot( "public.message.status",fileName);
         }catch(Exception e){
             logger.error(e.getMessage());
-            return errorResponseCode(e.getMessage());
+            return ResponseCode.error(e.getMessage());
         }
 
         String reStatusStr;
@@ -126,7 +116,7 @@ public abstract class BaiDuAIDiscern {
             reStatusStr = jsonObject.get(status).toString();
             list = JSONUtils.convertToList(messages, Map.class);
         }catch(Exception e){
-            return responseCode(code,message);
+            return new ResponseCode(code,message);
         }
 
         for (Map<String, String> map : list) {
@@ -143,7 +133,7 @@ public abstract class BaiDuAIDiscern {
             message = reStatusStr;
         }
 
-        return responseCode(code,message);
+        return new ResponseCode(code,message);
     }
 
     /**

@@ -2,6 +2,7 @@ package com.cxcmomo.baiduai.recognition.function;
 
 import com.baidu.aip.ocr.AipOcr;
 import com.cxcmomo.baiduai.recognition.BaiDuAIDiscern;
+import com.cxcmomo.baiduai.recognition.util.ResponseCode;
 import com.cxcmomo.baiduai.util.JSONUtils;
 import com.cxcmomo.baiduai.util.PropertiesUtil;
 import org.json.JSONObject;
@@ -110,14 +111,14 @@ public class IdCardDiscern extends BaiDuAIDiscern {
                         if ("0".equals(map.get("code"))) {
                             orgParam(response, jsonObject, fieldStr);
                         }else {
-                            response = responseCode(map.get("code"),map.get("message"));
+                            response = new ResponseCode(map.get("code"),map.get("message"));
                         }
                         break;
                     }
                 }
 
                 if(igs){
-                    response = errorResponseCode("未判定状态异常:" + jsonObject.toString());
+                    response = ResponseCode.error("未判定状态异常:" + jsonObject.toString());
                 }
 
             }
