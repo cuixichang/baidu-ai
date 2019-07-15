@@ -64,6 +64,10 @@ public class CustomOrganizationCodeDiscern  extends BaiDuAIDiscern {
     protected String orgStructure(JSONObject jsonObject, String fieldStr, String... params)throws Exception {
         Map<String, Object> response = new HashMap<String, Object>();
         try{
+            response = checkEnable(jsonObject);
+            if(!"0".equals(response.get("code"))){
+                return JSONUtils.convertToJSON(response);
+            }
             String statusStr = params[0];
             String statusMessage = params[1];
             String status = PropertiesUtil.getMessageByPropertiesFromRoot( statusStr,fileName);
